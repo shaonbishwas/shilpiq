@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Courses - EduVerse</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">EduVerse</div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="courses.html" class="active">Courses</a></li>
+                <li><a href="#" onclick="showSection('community')">Community</a></li>
+            </ul>
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Courses Section -->
+    <section style="padding-top: 8rem;">
+        <div class="section-header">
+            <h2>All Courses</h2>
+            <p>Explore our complete course catalog</p>
+        </div>
+        <div class="search-container">
+            <input type="text" class="search-bar" placeholder="Search courses..." id="searchInput" oninput="filterCourses()">
+        </div>
+        <div class="course-grid" id="allCourses"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-section logo-section">
+                <h3>EduVerse</h3>
+                <p>Empowering learners worldwide with quality education.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="Twitter">t</a>
+                    <a href="#" aria-label="Instagram">i</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+            <div class="footer-section links-section">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="courses.html">All Courses</a></li>
+                    <li><a href="#" onclick="showSection('community')">Community</a></li>
+                </ul>
+                <h4>Support & Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 EduVerse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Course Data will be loaded from courses.json
+        let coursesData = [];
+
+        // Initialize
+        async function init() {
+            try {
+                const response = await fetch('courses.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load courses');
+                }
+                coursesData = await response.json();
+                renderCourses('allCourses', coursesData);
+            } catch (error) {
+                console.error('Error loading courses:', error);
+                document.getElementById('allCourses').innerHTML = '<p style="text-align: center; color: var(--text-gray); grid-column: 1/-1;">Failed to load courses. Please refresh the page.</p>';
+            }
+        }
+
+        // Render Courses
+        function renderCourses(containerId, courses) {
+            const container = document.getElementById(containerId);
+            if (courses.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-gray); grid-column: 1/-1;">No courses found.</p>';
+                return;
+            }
+            
+            container.innerHTML = courses.map(course => `
+                <a href="course-details.html?courseId=${course.id}" style="text-decoration: none; color: inherit;">
+                    <div class="course-card">
+                        <div class="course-image">
+                            <span>${course.icon}</span>
+                        </div>
+                        <div class="course-content">
+                            <span class="course-tag">${course.price === 0 ? 'FREE' : '$' + course.price}</span>
+                            <h3>${course.title}</h3>
+                            <p>${course.description}</p>
+                            <button class="view-details-btn" style="background: var(--primary); color: var(--dark); border: none; padding: 0.8rem 1.5rem; border-radius: 25px; cursor: pointer;">View Details</button>
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // Filter Courses
+        function filterCourses() {
+            if (!coursesData || coursesData.length === 0) {
+                return;
+            }
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            const filtered = coursesData.filter(course => 
+                course.title.toLowerCase().includes(searchTerm) ||
+                course.description.toLowerCase().includes(searchTerm) ||
+                course.category.toLowerCase().includes(searchTerm)
+            );
+            renderCourses('allCourses', filtered);
+        }
+
+        // Toggle Mobile Menu (minimal, as no sections to show)
+        function toggleMenu() {
+            document.querySelector('.nav-links').classList.toggle('active');
+        }
+
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

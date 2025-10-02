@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Details - EduVerse</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">EduVerse</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html#home">Home</a></li>
+                <li><a href="index.html#courses">Courses</a></li>
+                <!-- <li><a href="index.html#upload">Upload Course</a></li> -->
+                <li><a href="index.html#community">Community</a></li>
+            </ul>
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Course Detail Section -->
+    <section>
+        <div class="course-detail" id="courseDetail">
+            <!-- Content will be populated by JavaScript -->
+        </div>
+    </section>
+
+    <script>
+        // Course Data will be loaded from courses.json
+        let coursesData;
+
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+        // Enroll Course
+        function enrollCourse(courseTitle) {
+            alert(`🎉 Congratulations! You've successfully enrolled in "${courseTitle}"!\n\nYou'll receive an email with access instructions shortly.`);
+        }
+
+        // Get course from URL parameter and render
+        function renderCourseDetail() {
+            if (!coursesData) {
+                document.getElementById('courseDetail').innerHTML = '<h1>Loading...</h1><p>Please wait while we load the course details.</p>';
+                return;
+            }
+            const urlParams = new URLSearchParams(window.location.search);
+            const courseId = parseInt(urlParams.get('courseId'));
+            const course = coursesData.find(c => c.id === courseId);
+
+            if (!course) {
+                document.getElementById('courseDetail').innerHTML = '<h1>Course not found</h1><p>The requested course could not be found.</p>';
+                return;
+            }
+
+            document.getElementById('courseDetail').innerHTML = `
+                <h1>${course.title}</h1>
+                <p class="instructor">Instructor: ${course.instructor}</p>
+                ${course.video ? `
+                    <div class="video-container">
+                        <iframe src="https://www.youtube.com/embed/${course.video}?rel=0" frameborder="0" allowfullscreen></iframe>
+                    </div>
+                ` : ''}
+                <div class="course-description">
+                    <h3>About This Course</h3>
+                    ${course.description}
+                </div>
+                ${course.content ? `
+                    <div class="course-content">
+                        <h3>Course Content</h3>
+                        ${course.content.map(chapter => `
+                            <details>
+                                <summary>${chapter.title}</summary>
+                                <p class="chapter-description">${chapter.description}</p>
+                            </details>
+                        `).join('')}
+                    </div>
+                ` : ''}
+                <div class="price-section">
+                    <div>
+                        <div style="font-size: 0.9rem; color: var(--text-gray);">Price</div>
+                        <div class="price-display">${course.price === 0 ? 'FREE' : '$' + course.price}</div>
+                    </div>
+                    <button class="cta-btn" onclick="enrollCourse('${course.title}')">Enroll Now</button>
+                </div>
+            `;
+        }
+
+        // Initialize
+        async function init() {
+            try {
+                const response = await fetch('courses.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load courses');
+                }
+                coursesData = await response.json();
+                renderCourseDetail();
+            } catch (error) {
+                console.error('Error loading courses:', error);
+                document.getElementById('courseDetail').innerHTML = '<h1>Error Loading Course</h1><p>Failed to load course data. Please refresh the page.</p>';
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', init);
+    </script>
+</body>
+</html>

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EduVerse - Learn Without Limits</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="logo">EduVerse</div>
+            <ul class="nav-links" id="navLinks">
+                <li><a onclick="showSection('home')">Home</a></li>
+                <li><a href="courses.html">Courses</a></li>
+                <!-- <li><a onclick="showSection('upload')">Upload Course</a></li> -->
+                <li><a onclick="showSection('community')">Community</a></li>
+            </ul>
+            <div class="mobile-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Home Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Learn Without Limits</h1>
+            <p>Master new skills with world-class courses from industry experts. Start your learning journey today.</p>
+            <button class="cta-btn" onclick="window.location.href='courses.html'">Browse Courses</button>
+        </div>
+    </section>
+
+    <!-- Featured Courses -->
+    <section id="featured" style="background: var(--dark);">
+        <div class="section-header">
+            <h2>Featured Courses</h2>
+            <p>Handpicked courses to accelerate your career</p>
+        </div>
+        <div class="course-grid" id="featuredCourses"></div>
+
+        <!-- Testimonials -->
+        <div class="testimonials">
+            <div class="section-header">
+                <h2>What Our Students Say</h2>
+                <p>Join thousands of successful learners</p>
+            </div>
+            <div class="testimonial-grid">
+                <div class="testimonial-card">
+                    <p>"EduVerse transformed my career. The courses are incredibly detailed and the instructors are top-notch!"</p>
+                    <div class="testimonial-author">Sarah Johnson</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"I learned more in 3 months here than I did in years of self-study. Highly recommend!"</p>
+                    <div class="testimonial-author">Michael Chen</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"The best investment I've made in my professional development. Amazing community and support!"</p>
+                    <div class="testimonial-author">Emily Rodriguez</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Upload Section -->
+    <section id="upload" class="hidden" style="padding-top: 8rem;">
+        <div class="section-header">
+            <h2>Upload Your Course</h2>
+            <p>Share your knowledge with the world</p>
+        </div>
+        <form class="upload-form" onsubmit="submitCourse(event)">
+            <div class="form-group">
+                <label for="courseTitle">Course Title</label>
+                <input type="text" id="courseTitle" required placeholder="e.g., Advanced JavaScript Masterclass">
+            </div>
+            <div class="form-group">
+                <label for="courseDesc">Course Description</label>
+                <textarea id="courseDesc" required placeholder="Describe what students will learn..."></textarea>
+            </div>
+            <div class="form-group">
+                <label for="videoLink">Video Preview Link (YouTube)</label>
+                <input type="url" id="videoLink" placeholder="https://youtube.com/watch?v=...">
+            </div>
+            <div class="form-group">
+                <label for="coursePrice">Price ($)</label>
+                <input type="number" id="coursePrice" placeholder="0 for free" min="0">
+            </div>
+            <button type="submit" class="cta-btn" style="width: 100%;">Submit Course</button>
+        </form>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community" class="hidden" style="padding-top: 8rem;">
+        <div class="section-header">
+            <h2>Community Courses</h2>
+            <p>Courses created by our talented community members</p>
+        </div>
+        <div class="course-grid" id="communityCourses"></div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="modern-footer">
+        <div class="footer-content">
+            <div class="footer-section logo-section">
+                <h3>EduVerse</h3>
+                <p>Empowering learners worldwide with quality education.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook">f</a>
+                    <a href="#" aria-label="Twitter">t</a>
+                    <a href="#" aria-label="Instagram">i</a>
+                    <a href="#" aria-label="LinkedIn">in</a>
+                </div>
+            </div>
+            <div class="footer-section links-section">
+               
+                <h4>Support & Legal</h4>
+                <ul class="footer-links">
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>&copy; 2025 EduVerse. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Course Data will be loaded from courses.json
+        let coursesData;
+        let communityCourses = [];
+
+        // Initialize
+        async function init() {
+            try {
+                const response = await fetch('courses.json');
+                if (!response.ok) {
+                    throw new Error('Failed to load courses');
+                }
+                coursesData = await response.json();
+        communityCourses = localStorage.getItem('communityCourses') ? JSON.parse(localStorage.getItem('communityCourses')) : [];
+        renderCourses('featuredCourses', coursesData.slice(0, 6));
+
+        renderCourses('communityCourses', communityCourses);
+            } catch (error) {
+                console.error('Error loading courses:', error);
+                // Fallback to empty or show error message
+                document.getElementById('featuredCourses').innerHTML = '<p style="text-align: center; color: var(--text-gray); grid-column: 1/-1;">Failed to load courses. Please refresh the page.</p>';
+                document.getElementById('allCourses').innerHTML = '<p style="text-align: center; color: var(--text-gray); grid-column: 1/-1;">Failed to load courses. Please refresh the page.</p>';
+            }
+        }
+
+        // Render Courses
+        function renderCourses(containerId, courses) {
+            const container = document.getElementById(containerId);
+            if (courses.length === 0 && containerId === 'communityCourses') {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-gray); grid-column: 1/-1;">No community courses yet. Be the first to upload!</p>';
+                return;
+            }
+            
+            container.innerHTML = courses.map(course => `
+                <a href="course-details.html?courseId=${course.id}" style="text-decoration: none; color: inherit;">
+                    <div class="course-card">
+                        <div class="course-image">
+                            <span>${course.icon}</span>
+                        </div>
+                        <div class="course-content">
+                            <span class="course-tag">${course.price === 0 ? 'FREE' : '$' + course.price}</span>
+                            <h3>${course.title}</h3>
+                            <p>${course.description}</p>
+                            <button class="view-details-btn" style="background: var(--primary); color: var(--dark); border: none; padding: 0.8rem 1.5rem; border-radius: 25px; cursor: pointer;">View Details</button>
+                            ${containerId === 'communityCourses' ? `<button class="delete-btn" onclick="deleteCommunityCourse(${course.id}); event.stopPropagation();" style="background: #ff4444; color: white; border: none; padding: 0.5rem 1rem; border-radius: 5px; cursor: pointer; margin-left: 10px; font-size: 0.8rem;">Delete</button>` : ''}
+                        </div>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+
+
+        // Show Section
+        function showSection(sectionName) {
+            const sections = ['home', 'upload', 'community'];
+            sections.forEach(section => {
+                const el = document.getElementById(section);
+                if (section === sectionName) {
+                    el.classList.remove('hidden');
+                } else if (section !== 'home') {
+                    el.classList.add('hidden');
+                }
+            });
+
+            if (sectionName === 'home') {
+                document.getElementById('featured').classList.remove('hidden');
+            } else {
+                document.getElementById('featured').classList.add('hidden');
+            }
+
+            document.getElementById('navLinks').classList.remove('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Toggle Mobile Menu
+        function toggleMenu() {
+            document.getElementById('navLinks').classList.toggle('active');
+        }
+
+
+
+        // Submit Course
+        function submitCourse(event) {
+            event.preventDefault();
+            
+            const title = document.getElementById('courseTitle').value;
+            const description = document.getElementById('courseDesc').value;
+            const videoLink = document.getElementById('videoLink').value;
+            const price = parseFloat(document.getElementById('coursePrice').value) || 0;
+            
+            let videoId = '';
+            if (videoLink) {
+                const match = videoLink.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&]+)/);
+                videoId = match ? match[1] : '';
+            }
+
+            const newCourse = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                price: price,
+                category: "Community",
+                instructor: "Community Member",
+                video: videoId,
+                icon: "⭐"
+            };
+
+            communityCourses.push(newCourse);
+            localStorage.setItem('communityCourses', JSON.stringify(communityCourses));
+            renderCourses('communityCourses', communityCourses);
+            
+            alert(`✅ Course "${title}" has been uploaded successfully!\n\nThank you for contributing to our community!`);
+            
+            event.target.reset();
+            showSection('community');
+        }
+
+        // Delete Community Course
+        function deleteCommunityCourse(courseId) {
+            const index = communityCourses.findIndex(c => c.id === courseId);
+            if (index !== -1) {
+                if (confirm('Are you sure you want to delete this course?')) {
+                    communityCourses.splice(index, 1);
+                    localStorage.setItem('communityCourses', JSON.stringify(communityCourses));
+                    renderCourses('communityCourses', communityCourses);
+                    alert('Course deleted successfully!');
+                }
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('load', init);
+
+        // Handle hash navigation
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash.substring(1);
+            if (hash && ['home', 'upload', 'community'].includes(hash)) {
+                showSection(hash);
+            } else if (!hash) {
+                showSection('home');
+            }
+        });
+
+        // Initial hash check
+        if (window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            if (hash && ['home', 'upload', 'community'].includes(hash)) {
+                showSection(hash);
+            }
+        }
+    </script>
+</body>
+</html>

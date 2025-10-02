@@ -1,0 +1,146 @@
+[
+    {
+        "id": 1,
+        "title": "Complete Web Development Bootcamp",
+        "description": "Master HTML, CSS, JavaScript, React, Node.js and more in this comprehensive course.",
+        "price": 0,
+        "category": "Development",
+        "instructor": "John Doe",
+        "video": "dQw4w9WgXcQ",
+        "icon": "🚀",
+        "content": [
+            {
+                "title": "Chapter 1: HTML Fundamentals",
+                "description": "Learn the basics of HTML structure, tags, and semantic elements."
+            },
+            {
+                "title": "Chapter 2: CSS Styling",
+                "description": "Dive into CSS selectors, layouts, and responsive design principles."
+            },
+            {
+                "title": "Chapter 3: JavaScript Basics",
+                "description": "Understand variables, functions, DOM manipulation, and event handling."
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "Advanced Python Programming",
+        "description": "Take your Python skills to the next level with advanced concepts and real-world projects.",
+        "price": 49,
+        "category": "Programming",
+        "instructor": "Jane Smith",
+        "video": "dQw4w9WgXcQ",
+        "icon": "🐍",
+        "content": [
+            {
+                "title": "Chapter 1: Object-Oriented Programming",
+                "description": "Explore classes, inheritance, polymorphism, and encapsulation in Python."
+            },
+            {
+                "title": "Chapter 2: Data Structures and Algorithms",
+                "description": "Implement lists, dictionaries, sorting, searching, and graph algorithms."
+            },
+            {
+                "title": "Chapter 3: File I/O and Libraries",
+                "description": "Work with files, exceptions, and popular libraries like NumPy and Pandas."
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "UI/UX Design Masterclass",
+        "description": "Learn to create beautiful, user-friendly interfaces with modern design principles.",
+        "price": 0,
+        "category": "Design",
+        "instructor": "Mike Johnson",
+        "video": "dQw4w9WgXcQ",
+        "icon": "🎨",
+        "content": [
+            {
+                "title": "Chapter 1: Design Principles",
+                "description": "Understand color theory, typography, and layout fundamentals."
+            },
+            {
+                "title": "Chapter 2: User Research",
+                "description": "Conduct user interviews, surveys, and create personas and journey maps."
+            },
+            {
+                "title": "Chapter 3: Prototyping Tools",
+                "description": "Use Figma, Adobe XD, and Sketch to build interactive prototypes."
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "Digital Marketing Strategy",
+        "description": "Master SEO, social media, content marketing and analytics to grow your business.",
+        "price": 39,
+        "category": "Marketing",
+        "instructor": "Sarah Williams",
+        "video": "dQw4w9WgXcQ",
+        "icon": "📱",
+        "content": [
+            {
+                "title": "Chapter 1: SEO Basics",
+                "description": "Learn keyword research, on-page optimization, and technical SEO."
+            },
+            {
+                "title": "Chapter 2: Social Media Marketing",
+                "description": "Strategies for platforms like Facebook, Instagram, and LinkedIn."
+            },
+            {
+                "title": "Chapter 3: Content and Email Marketing",
+                "description": "Create compelling content and build email campaigns for lead generation."
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "Machine Learning Fundamentals",
+        "description": "Understand the core concepts of AI and machine learning with hands-on projects.",
+        "price": 59,
+        "category": "Data Science",
+        "instructor": "Dr. Alex Chen",
+        "video": "dQw4w9WgXcQ",
+        "icon": "🤖",
+        "content": [
+            {
+                "title": "Chapter 1: Introduction to ML",
+                "description": "Overview of supervised, unsupervised, and reinforcement learning."
+            },
+            {
+                "title": "Chapter 2: Data Preprocessing",
+                "description": "Handle missing data, feature scaling, and encoding categorical variables."
+            },
+            {
+                "title": "Chapter 3: Algorithms",
+                "description": "Implement linear regression, decision trees, and neural networks."
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "title": "Mobile App Development with React Native",
+        "description": "Build cross-platform mobile apps for iOS and Android using React Native.",
+        "price": 0,
+        "category": "Development",
+        "instructor": "Emily Brown",
+        "video": "dQw4w9WgXcQ",
+        "icon": "📲",
+        "content": [
+            {
+                "title": "Chapter 1: React Native Setup",
+                "description": "Install tools, create projects, and understand the architecture."
+            },
+            {
+                "title": "Chapter 2: Core Components",
+                "description": "Build UI with View, Text, Image, and navigation using React Navigation."
+            },
+            {
+                "title": "Chapter 3: State Management and APIs",
+                "description": "Use Redux or Context API and integrate with REST APIs."
+            }
+        ]
+    }
+]
